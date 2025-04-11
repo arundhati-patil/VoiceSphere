@@ -59,8 +59,13 @@ const Room: React.FC = () => {
   }, [isMuted]);
 
   const handleBackClick = useCallback(() => {
-    setLocation('/');
-  }, [setLocation]);
+    setLocation('/rooms');
+    toast({
+      title: "Left Room",
+      description: "You have exited the room successfully",
+      duration: 2000,
+    });
+  }, [setLocation, toast]);
 
   const handleUserClick = useCallback((user: User) => {
     // Get the user's position for emoji animation
@@ -177,7 +182,7 @@ const Room: React.FC = () => {
       
       <RoomHeader 
         room={{...currentRoom, isLive}}
-        onBackClick={() => setLocation('/rooms')}
+        onBackClick={handleBackClick}
       />
       
       <AvatarGrid 
