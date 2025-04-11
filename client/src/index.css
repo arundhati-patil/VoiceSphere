@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-color: #121214;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(79, 70, 229, 0.2) 0%, transparent 50%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  .glassmorphism {
+    @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-lg;
+  }
+
+  .chat-bubble {
+    position: relative;
+  }
+  
+  .chat-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 12px;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: currentColor;
+    border-bottom: 0;
+    margin-left: -4px;
+    margin-bottom: -8px;
+  }
+  
+  .chat-bubble-right:after {
+    left: auto;
+    right: 12px;
+    margin-right: -4px;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-x;
+  }
+}
+
+@layer utilities {
+  .animate-gradient-x {
+    animation: gradient-x 8s linear infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+
+  .animate-emoji-float {
+    animation: emoji-float 3s ease-out forwards;
+  }
+}
+
+@keyframes gradient-x {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes slide-up {
+  0% { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes fade-in {
+  0% { 
+    opacity: 0; 
+  }
+  100% { 
+    opacity: 1; 
+  }
+}
+
+@keyframes emoji-float {
+  0% { 
+    transform: translateY(0) scale(0.5); 
+    opacity: 0; 
+  }
+  50% { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(-80px) scale(1.5); 
+    opacity: 0; 
+  }
+}
