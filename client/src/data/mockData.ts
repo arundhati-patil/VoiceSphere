@@ -142,14 +142,54 @@ export const messages: ChatMessage[] = [
   },
 ];
 
-// Mock active room
-export const activeRoom: Room = {
-  id: "1",
-  name: "Music & Discussion",
-  description: "Late night vibes with the community",
-  participants: 247,
-  isLive: true,
-};
+// Mock rooms
+export const rooms: Room[] = [
+  {
+    id: "1",
+    name: "Music & Discussion",
+    description: "Late night vibes with the community",
+    participants: 247,
+    isLive: true,
+  },
+  {
+    id: "2",
+    name: "Tech Talk",
+    description: "Discussing the latest in technology and coding",
+    participants: 189,
+    isLive: true,
+  },
+  {
+    id: "3",
+    name: "Business Networking",
+    description: "Connect with professionals and entrepreneurs",
+    participants: 142,
+    isLive: true,
+  },
+  {
+    id: "4",
+    name: "Gaming Community",
+    description: "Chat about your favorite games and strategies",
+    participants: 285,
+    isLive: false,
+  },
+  {
+    id: "5",
+    name: "Mindfulness & Wellness",
+    description: "Share wellness tips and mindfulness practices",
+    participants: 102,
+    isLive: false,
+  },
+  {
+    id: "6",
+    name: "Creative Arts",
+    description: "For artists, musicians, and creative minds",
+    participants: 156,
+    isLive: true,
+  }
+];
+
+// Active room (the one currently being viewed)
+export const activeRoom: Room = rooms[0];
 
 // Mock emojis for reactions
 export const emojis = ['❤️', '🔥', '👏', '✨', '🎵', '🎧', '🎉'];

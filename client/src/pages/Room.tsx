@@ -1,24 +1,53 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 import RoomHeader from '@/components/RoomHeader';
 import AvatarGrid from '@/components/AvatarGrid';
 import ChatPanel from '@/components/ChatPanel';
 import BottomNavigation from '@/components/BottomNavigation';
 import AnimatedBackground from '@/components/AnimatedBackground';
-import { users, messages as initialMessages, activeRoom, currentUser } from '@/data/mockData';
+import { users, messages as initialMessages, rooms, currentUser } from '@/data/mockData';
 import { useToast } from '@/hooks/use-toast';
-import { User, ChatMessage } from '@/data/mockData';
+import { User, ChatMessage, Room as RoomType } from '@/data/mockData';
 import { useEmojiAnimation } from '@/hooks/useEmojiAnimation';
 
 const Room: React.FC = () => {
   const [, setLocation] = useLocation();
+  const [, params] = useRoute('/room/:id');
   const { toast } = useToast();
   const [messages, setMessages] = useState(initialMessages);
   const [allUsers, setAllUsers] = useState<User[]>(users);
   const [isMuted, setIsMuted] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(true);
-  const [isLive, setIsLive] = useState(activeRoom.isLive);
+  const [currentRoom, setCurrentRoom] = useState<RoomType | null>(null);
+  const [isLive, setIsLive] = useState(false);
   const { createEmojiAtPosition } = useEmojiAnimation();
+  
+  // Find the correct room based on the URL parameter
+  useEffect(() => {
+    if (params && params.id) {
+      const roomId = params.id;
+      const foundRoom = rooms.find(room => room.id === roomId);
+      if (foundRoom) {
+        setCurrentRoom(foundRoom);
+        setIsLive(foundRoom.isLive);
+      } else {
+        // Room not found, redirect to rooms list
+        setLocation('/rooms');
+        toast({
+          title: "Room not found",
+          description: "The room you're looking for doesn't exist",
+          variant: "destructive",
+        });
+      }
+    } else {
+      // No room ID, redirect to first room
+      if (rooms.length > 0) {
+        setLocation(`/room/${rooms[0].id}`);
+      } else {
+        setLocation('/rooms');
+      }
+    }
+  }, [params, setLocation, toast]);
 
   // Update current user mute status
   useEffect(() => {
@@ -75,7 +104,7 @@ const Room: React.FC = () => {
   }, []);
 
   const handleGoLiveClick = useCallback(() => {
-    setIsLive(prev => !prev);
+    setIsLive((prev: boolean) => !prev);
     toast({
       title: isLive ? "Left Room" : "Joined Room",
       description: isLive ? "You are no longer live" : "You are now broadcasting",
@@ -132,13 +161,23 @@ const Room: React.FC = () => {
     return () => clearInterval(interval);
   }, [isChatOpen]);
 
+  // If room is still loading, show loading state
+  if (!currentRoom) {
+    return (
+      <div className="flex flex-col h-screen items-center justify-center relative">
+        <AnimatedBackground />
+        <div className="text-2xl font-bold gradient-text">Loading room...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-screen relative overflow-hidden">
       <AnimatedBackground />
       
       <RoomHeader 
-        room={{...activeRoom, isLive}}
-        onBackClick={handleBackClick}
+        room={{...currentRoom, isLive}}
+        onBackClick={() => setLocation('/rooms')}
       />
       
       <AvatarGrid 
