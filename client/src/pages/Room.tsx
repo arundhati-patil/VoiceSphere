@@ -59,7 +59,7 @@ const Room: React.FC = () => {
   }, [isMuted]);
 
   const handleBackClick = useCallback(() => {
-    setLocation('/');
+    setLocation('/rooms');
     toast({
       title: "Left Room",
       description: "You have exited the room successfully",
