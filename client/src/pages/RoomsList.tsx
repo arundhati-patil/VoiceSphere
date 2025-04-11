@@ -87,13 +87,14 @@ const RoomsList: React.FC = () => {
                       </span>
                       <div className="flex space-x-4">
                         <div className="flex -space-x-2">
-                          {Array(3).fill(0).map((_, i) => (
-                            <div key={i} className="w-6 h-6 rounded-full overflow-hidden border-2 border-background">
-                              <img 
-                                src={`https://images.unsplash.com/photo-15${70 + i}4790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face`} 
-                                alt="User avatar" 
-                                className="w-full h-full object-cover"
-                              />
+                          {[0, 1, 2].map((i) => (
+                            <div 
+                              key={i} 
+                              className="w-6 h-6 rounded-full overflow-hidden border-2 border-background flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                            >
+                              <span className="text-xs font-bold text-white">
+                                {String.fromCharCode(65 + i)}
+                              </span>
                             </div>
                           ))}
                         </div>
